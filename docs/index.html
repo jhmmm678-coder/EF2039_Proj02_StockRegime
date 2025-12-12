@@ -3,67 +3,317 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EF2039 Project Webpage</title>
+  <title>Stock Regime Classifier | EF2039 Project 2</title>
   <style>
-    body { font-family: Arial, sans-serif; line-height: 1.55; margin: 0; background:#fafafa; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 28px; background: white; }
-    h1 { margin-top: 0; }
-    .meta { color:#555; margin-bottom: 18px; }
-    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    .card { border:1px solid #e5e5e5; border-radius: 10px; padding: 16px; }
-    img { max-width: 100%; border-radius: 10px; border:1px solid #eee; }
-    a { color:#0b57d0; }
-    @media (min-width: 900px){ .grid { grid-template-columns: 1fr 1fr; } }
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --text:#e8eefc;
+      --muted:#b7c3e0;
+      --line:rgba(255,255,255,.10);
+      --accent:#6ea8ff;
+      --accent2:#5eead4;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 500px at 20% -10%, rgba(110,168,255,.25), transparent 60%),
+        radial-gradient(900px 500px at 95% 10%, rgba(94,234,212,.16), transparent 55%),
+        radial-gradient(800px 500px at 50% 110%, rgba(110,168,255,.12), transparent 55%),
+        var(--bg);
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px; margin:0 auto; padding:26px 18px 40px}
+    .nav{
+      display:flex; justify-content:space-between; align-items:center;
+      padding:10px 12px; border:1px solid var(--line); border-radius:999px;
+      background: rgba(255,255,255,.03);
+      backdrop-filter: blur(6px);
+    }
+    .nav strong{letter-spacing:.2px}
+    .nav .links{display:flex; gap:14px; flex-wrap:wrap; font-size:14px; color:var(--muted)}
+    .hero{margin-top:18px; padding:22px; border:1px solid var(--line); border-radius:var(--radius); background:rgba(255,255,255,.04); box-shadow:var(--shadow)}
+    .hero h1{margin:0 0 10px; font-size:34px; line-height:1.15}
+    .hero p{margin:0; color:var(--muted); font-size:16px}
+    .badges{margin-top:14px; display:flex; gap:10px; flex-wrap:wrap}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px; border:1px solid var(--line);
+      border-radius:999px; background:rgba(255,255,255,.03);
+      font-size:13px; color:var(--muted)
+    }
+    .dot{width:8px; height:8px; border-radius:999px; background:var(--accent2); display:inline-block}
+    .grid{margin-top:18px; display:grid; grid-template-columns:1fr; gap:14px}
+    @media(min-width:900px){ .grid{grid-template-columns:1fr 1fr} }
+    .card{
+      border:1px solid var(--line); border-radius:var(--radius);
+      background:rgba(255,255,255,.03); padding:16px 16px 14px;
+    }
+    .card h2{margin:0 0 10px; font-size:18px}
+    .card p, .card li{color:var(--muted)}
+    .card ul{margin:8px 0 0 18px}
+    .kpi{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px
+    }
+    .kpi .k{
+      border:1px solid var(--line); border-radius:14px; padding:10px; background:rgba(17,26,46,.55)
+    }
+    .k .label{font-size:12px; color:var(--muted)}
+    .k .value{font-size:18px; margin-top:4px}
+    .code{
+      border:1px solid var(--line); border-radius:14px; padding:12px;
+      background:rgba(17,26,46,.65);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      color:#d9e3ff; font-size:13px; overflow:auto;
+    }
+    table{
+      width:100%; border-collapse:collapse; overflow:hidden;
+      border:1px solid var(--line); border-radius:14px;
+      background:rgba(17,26,46,.45);
+      font-size:13px;
+    }
+    th, td{padding:10px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+    th{color:#d9e3ff; text-align:left; background:rgba(255,255,255,.03)}
+    tr:last-child td{border-bottom:none}
+    .full{margin-top:14px}
+    .figure{
+      margin-top:10px; border:1px solid var(--line); border-radius:14px;
+      padding:10px; background:rgba(17,26,46,.55)
+    }
+    .figure img{max-width:100%; display:block; border-radius:12px; border:1px solid rgba(255,255,255,.08)}
+    .caption{margin-top:8px; font-size:12px; color:var(--muted)}
+    .footer{
+      margin-top:18px; padding:16px; border:1px solid var(--line);
+      border-radius:var(--radius); background:rgba(255,255,255,.03);
+      color:var(--muted); font-size:13px;
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <h1>Project Title (Proj 1 or Proj 2)</h1>
-    <div class="meta">
-      Jungho Moon (20240110) · EF2039 AI Programming · Dec 2025
-      <br/>Repo: <a href="YOUR_GITHUB_REPO_LINK">YOUR_GITHUB_REPO_LINK</a>
+    <div class="nav">
+      <strong>EF2039 · Project 2</strong>
+      <div class="links">
+        <a href="#overview">Overview</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#model">Model</a>
+        <a href="#results">Results</a>
+        <a href="#repro">Reproducibility</a>
+        <a href="#limits">Limitations</a>
+      </div>
     </div>
+
+    <section class="hero" id="overview">
+      <h1>Stock Regime Classifier</h1>
+      <p>
+        This project learns <b>stock market regimes</b> from cross-sectional return-based features and trains a
+        <b>neural network classifier</b> that predicts the regime of each stock.
+      </p>
+
+      <div class="badges">
+        <div class="badge"><span class="dot"></span>Unsupervised labeling (KMeans)</div>
+        <div class="badge"><span class="dot"></span>Supervised classification (PyTorch MLP)</div>
+        <div class="badge"><span class="dot"></span>6 return-based features</div>
+        <div class="badge"><span class="dot"></span>3 regimes: Downtrend · Stable · High-Alpha</div>
+      </div>
+
+      <div class="kpi">
+        <div class="k">
+          <div class="label">Repository</div>
+          <div class="value">
+            <a href="https://github.com/jhmmm678-coder/EF2039_Proj02_StockRegime">jhmmm678-coder/EF2039_Proj02_StockRegime</a>
+          </div>
+        </div>
+        <div class="k">
+          <div class="label">Author</div>
+          <div class="value">Jungho Moon (20240110)</div>
+        </div>
+      </div>
+    </section>
 
     <div class="grid">
-      <div class="card">
-        <h2>Motivation</h2>
+      <section class="card">
+        <h2>Regime Definition</h2>
+        <p>A regime is a group of stocks sharing similar risk–return characteristics.</p>
         <ul>
-          <li>What problem are you solving?</li>
-          <li>Why does it matter?</li>
+          <li><b>Downtrend</b>: negative average returns and high drawdowns</li>
+          <li><b>Stable</b>: moderate risk and moderate returns</li>
+          <li><b>High-Alpha</b>: higher returns with controlled risk</li>
         </ul>
-      </div>
+        <p style="margin-top:10px;">
+          Goal: assign each stock to a regime using summary statistics of daily returns.
+        </p>
+      </section>
 
-      <div class="card">
-        <h2>Methods</h2>
-        <ul>
-          <li>Data / Tools / Models used</li>
-          <li>Pipeline (1 figure is enough)</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h2>Results</h2>
-        <ul>
-          <li>Key finding #1 (quantitative)</li>
-          <li>Key finding #2 (visual/qualitative)</li>
-        </ul>
-        <!-- 이미지 넣고 싶으면 레포에 docs/assets/figure1.png 업로드 후 아래처럼 -->
-        <!-- <img src="assets/figure1.png" alt="Result figure" /> -->
-      </div>
-
-      <div class="card">
-        <h2>Impact & Future Work</h2>
-        <ul>
-          <li>Potential impact / application</li>
-          <li>Next steps</li>
-        </ul>
-      </div>
+      <section class="card">
+        <h2>Dataset & Features</h2>
+        <p>Input: <code>data/features_filtered.csv</code> (at least the columns below).</p>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:28%">Column</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Name</b></td><td>Stock name or ticker symbol</td></tr>
+            <tr><td><b>avg_return</b></td><td>Average daily return</td></tr>
+            <tr><td><b>volatility</b></td><td>Std. dev. of daily returns</td></tr>
+            <tr><td><b>skewness</b></td><td>Skewness of return distribution</td></tr>
+            <tr><td><b>kurtosis</b></td><td>Kurtosis of return distribution</td></tr>
+            <tr><td><b>mdd</b></td><td>Maximum drawdown</td></tr>
+            <tr><td><b>sharpe</b></td><td>Sharpe ratio (risk-adjusted return)</td></tr>
+          </tbody>
+        </table>
+      </section>
     </div>
 
-    <div class="card" style="margin-top:16px;">
-      <h2>Poster</h2>
-      <p>Upload your poster image or provide a link (optional).</p>
-      <!-- <img src="assets/poster.png" alt="Poster" /> -->
+    <section class="card full" id="pipeline">
+      <h2>Pipeline (Unsupervised → Supervised)</h2>
+      <ul>
+        <li><b>Step 1 — Standardize features</b> with <code>StandardScaler</code>.</li>
+        <li><b>Step 2 — KMeans (k=3)</b> clusters stocks in standardized feature space.</li>
+        <li><b>Step 3 — Interpret labels</b> by sorting clusters using mean <code>avg_return</code>:
+          lowest → Downtrend, middle → Stable, highest → High-Alpha.</li>
+        <li><b>Step 4 — Train an MLP classifier</b> to predict the regime label from 6 input features.</li>
+      </ul>
+
+      <div class="code" style="margin-top:10px;">
+# Build regime labels (processed dataset)
+python src/create_regimes.py
+
+# Train classifier
+python src/train.py --epochs 50 --batch_size 32 --lr 1e-3
+
+# Evaluate & generate plots
+python src/eval.py
+
+# Predict a single ticker
+python src/predict.py --ticker "AAPL"
+      </div>
+    </section>
+
+    <div class="grid" id="model">
+      <section class="card">
+        <h2>Model Architecture (RegimeMLP)</h2>
+        <ul>
+          <li>Input: 6 features</li>
+          <li>Hidden: Linear(6→64)+ReLU+Dropout(0.2)</li>
+          <li>Hidden: Linear(64→32)+ReLU+Dropout(0.2)</li>
+          <li>Output: Linear(32→3) logits</li>
+          <li>Loss: Cross-Entropy</li>
+          <li>Optimizer: Adam</li>
+          <li>Device: CUDA if available, else CPU</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>Training Setup</h2>
+        <ul>
+          <li>Stratified split: Train ~70% / Val ~15% / Test ~15%</li>
+          <li>Scaler is fit on train only, saved to <code>checkpoints/scaler.pkl</code></li>
+          <li>Best model (by validation accuracy) saved to <code>checkpoints/best_model.pt</code></li>
+        </ul>
+
+        <div class="kpi" style="margin-top:12px;">
+          <div class="k">
+            <div class="label">Test Accuracy</div>
+            <div class="value">XX.X% <span style="font-size:12px; color:var(--muted)">(replace)</span></div>
+          </div>
+          <div class="k">
+            <div class="label">Macro F1-score</div>
+            <div class="value">YY.Y% <span style="font-size:12px; color:var(--muted)">(replace)</span></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card full" id="results">
+      <h2>Evaluation & Visualizations</h2>
+      <p>
+        The evaluation script produces a classification report and confusion matrix, and visualizes the feature space
+        with a 2D PCA scatter plot (colored by regime).
+      </p>
+
+      <div class="grid" style="margin-top:12px;">
+        <div class="figure">
+          <!-- Put your image at docs/assets/pca_regimes.png -->
+          <img src="assets/pca_regimes.png" alt="PCA regimes (placeholder)" />
+          <div class="caption">
+            PCA projection of all stocks colored by <code>regime_id</code>.
+            (Copy <code>checkpoints/pca_regimes.png</code> → <code>docs/assets/pca_regimes.png</code>)
+          </div>
+        </div>
+
+        <div class="figure">
+          <!-- Put your image at docs/assets/confusion_matrix.png -->
+          <img src="assets/confusion_matrix.png" alt="Confusion matrix (placeholder)" />
+          <div class="caption">
+            Confusion matrix on the test set.
+            (Copy <code>checkpoints/confusion_matrix.png</code> → <code>docs/assets/confusion_matrix.png</code>)
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:14px;">
+        <h2>Inference Demo</h2>
+        <p>Predict the regime of a single ticker from the processed CSV:</p>
+        <div class="code">
+python src/predict.py --ticker "AAPL"
+
+# Example output (illustration)
+Ticker: AAPL
+Predicted regime: High-Alpha (id=2)
+Probabilities: [0.05 0.10 0.85]
+Description: Higher return with controlled risk.
+        </div>
+      </div>
+    </section>
+
+    <section class="card full" id="repro">
+      <h2>Reproducibility Checklist</h2>
+      <ol style="color:var(--muted); margin:8px 0 0 18px;">
+        <li>Prepare <code>data/features_filtered.csv</code> with required columns.</li>
+        <li>Generate regimes: <code>python src/create_regimes.py</code></li>
+        <li>Train model: <code>python src/train.py</code></li>
+        <li>Evaluate & plots: <code>python src/eval.py</code></li>
+        <li>Predict a ticker: <code>python src/predict.py --ticker "YOUR_TICKER"</code></li>
+      </ol>
+    </section>
+
+    <section class="card full" id="limits">
+      <h2>Limitations & Future Work</h2>
+      <div class="grid">
+        <div class="card" style="padding:14px;">
+          <h2 style="margin-bottom:8px;">Limitations</h2>
+          <ul>
+            <li>Regimes are defined by unsupervised clustering (no external validation labels).</li>
+            <li>Feature window choice affects regime definitions (period-dependent).</li>
+            <li>Only six summary statistics are used (may miss tail/intraday dynamics).</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:14px;">
+          <h2 style="margin-bottom:8px;">Future Work</h2>
+          <ul>
+            <li>Add features: beta, turnover, sector, valuation ratios, factor exposures.</li>
+            <li>Use time-series models (CNN/LSTM) for regime transitions over time.</li>
+            <li>Backtest regime-based portfolios to evaluate real investment impact.</li>
+            <li>Extend to more/dynamic regimes (e.g., “High-Volatility”, “Defensive”).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <b>Tip:</b> If images are not showing, confirm (1) you placed them under <code>docs/assets/</code>,
+      (2) filenames match exactly, and (3) you committed to the <code>main</code> branch.
     </div>
   </div>
 </body>
